@@ -1,7 +1,9 @@
-//var headerTitle = document.getElementById('header-title');
-//headerTitle.style.border = 'solid 3px #000';
-var secondItem= document.querySelector('.list-group-item:nth-child(2)');
-secondItem.style.backgroundColor = 'green';  
 
-var thirdItem = document.querySelector('.list-group-item:nth-child(3)');
-thirdItem.style.color = 'white';
+var secondItem = document.querySelectorAll('li:nth-child(2)');
+secondItem.style.color = 'green';
+
+
+var odd = document.querySelectorAll('li:nth-child(odd)');
+for(var i = 0;i < odd.length;i++){
+     odd[i].style.backgroundColor = 'green';
+}
