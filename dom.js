@@ -25,40 +25,34 @@ var itemList = document.querySelector('#items');
 
 
 
-// // create element
-// var newDiv = document.createElement('div');
+// create element
+var newDiv = document.createElement('div');
 
-// //   add class
-// newDiv.className = 'hello';
+//   add class
+newDiv.className = 'hello';
 
-// // add id
-// newDiv.id = 'hello1';
+// add id
+newDiv.id = 'hello1';
 
-// // set attribute
-// newDiv.setAttribute('title', 'Hello Div');
+// set attribute
+newDiv.setAttribute('title', 'Hello Div');
 
-// // create text node
-// var newDivText = document.createTextNode('Hello World');
-// newDiv.style.fontSize= '30px';
+// create text node
+var newDivText = document.createTextNode('Hello World');
+newDiv.style.fontSize= '30px';
 
-// // add text to div
-// newDiv.appendChild(newDivText);
+// add text to div
+newDiv.appendChild(newDivText);
 
-// // append to DOM Header
-// var container = document.querySelector('header .container');
-// var h1 = document.querySelector('header h1');
+// append to DOM Header
+var container = document.querySelector('header .container');
+var h1 = document.querySelector('header h1');
 
-// container.insertBefore(newDiv,h1);
+container.insertBefore(newDiv,h1);
 
-//  append top DOM Item1
-var newLi = document.createElement('li')
-newLi.className = 'hello';
-newLi.id = 'yo';
-var newLiText = document.createTextNode('hello world');
-newLi.appendChild(newLiText);
+// append top DOM Item1
 
 
-var liLi = (document.getElementById('items'));
-
-console.log(`${newLi.innerHTML} ${liLi.innerHTML}`);
-
+var item1 = document.querySelector('#items li:first-child');
+var hello = document.createTextNode('Hello World');
+item1.parentNode.insertBefore(hello, item1);
