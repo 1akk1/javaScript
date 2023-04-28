@@ -27,6 +27,4 @@ function onSubmit(e) {
     localStorage.setItem('email', email);
     localStorage.setItem('phone', phone);
     localStorage.setItem('time', time);
-
-    console.log(nameInput.value,emailInput.value,phoneInput.value);
 }
