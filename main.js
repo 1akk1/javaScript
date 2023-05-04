@@ -18,6 +18,7 @@ myform.addEventListener('submit' , onSubmit);
 
 function onSubmit(e) {
     e.preventDefault();
+
     let myObj = {
         name : document.getElementById('name').value,
         email : document.getElementById('email').value,
@@ -25,6 +26,5 @@ function onSubmit(e) {
         time : document.getElementById('time').value 
     };
     let myObj_serial = JSON.stringify(myObj);
-    localStorage.setItem("myObj", myObj_serial);
-    console.log(myObj_serial);
+    localStorage.setItem(document.getElementById('name').value , myObj_serial);
 }
