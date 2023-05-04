@@ -36,4 +36,5 @@ function onClick(e){
     e.preventDefault();
     
     localStorage.removeItem(document.getElementById('name').value);
+    document.getElementById("myform").reset();
 }
