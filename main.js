@@ -15,6 +15,7 @@
 
 
 myform.addEventListener('submit' , onSubmit);
+deletes.addEventListener('click' ,onClick);
 
 function onSubmit(e) {
     e.preventDefault();
@@ -27,6 +28,12 @@ function onSubmit(e) {
     };
 // to make the object a string
     let myObj_serial = JSON.stringify(myObj);
+    var objName = document.getElementById('name').value;
     // setting the key value to  name element and creating different element
-    localStorage.setItem(document.getElementById('name').value , myObj_serial);
+    localStorage.setItem(objName, myObj_serial);
+}
+function onClick(e){
+    e.preventDefault();
+    
+    localStorage.removeItem(document.getElementById('name').value);
 }
