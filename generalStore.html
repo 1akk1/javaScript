@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <title>General Store</title>
+</head>
+<body>
+    <form id="form">
+        <label for="name">Item Name:</label>
+        <input type="text" id="name">
+        <label for="description">Description:</label>
+        <input type="text" id="description">
+        <label for="price">Price:</label>
+        <input type="number" id="price">
+        <label for="quantity">Quantity:</label>
+        <input type="number" id="quantity"> 
+        <button>Add Item</button>
+    </form>
+    <ul id="items" class="list-group"></ul>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // getting form and itemlist 
+        const items = document.getElementById("items");
+        const form = document.getElementById("form");
+
+        // adding event listener to submit button
+        form.addEventListener('submit', additem);
+
+        function additem(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const description = document.getElementById('description').value;
+            const price = document.getElementById('price').value;
+            const quantity = document.getElementById('quantity').valueAsNumber;
+
+            // Saving data to backend
+            axios
+                .post('https://crudcrud.com/api/cfb4a97a0fdd4f098ebb1fe6b6418b4d/saveData', {
+                    name: name,
+                    description: description,
+                    price: price,
+                    quantity: quantity
+                })
+                .then(response => {
+                    // Show the new item on the website after successful backend update
+                    showItems(response.data);
+                    // Bind event listeners to buttons for backend data
+                    bindButtonEvents();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            form.reset();
+        }
+
+        // Function to update the item quantity on the backend and UI
+        function updateItemQuantity(itemId, quantityToReduce) {
+            axios
+                .patch(`https://crudcrud.com/api/cfb4a97a0fdd4f098ebb1fe6b6418b4d/saveData/${itemId}`, {
+                    quantity: quantityToReduce,
+                })
+                .then(response => {
+                    // Update the item in the UI with the updated quantity
+                    const itemElement = document.getElementById(itemId);
+                    const itemDetails = itemElement.textContent.split(' - ');
+                    const updatedQuantity = parseInt(itemDetails[3], 10) - quantityToReduce;
+                    itemElement.textContent = `${itemDetails[0]} - ${itemDetails[1]} - ${itemDetails[2]} - ${updatedQuantity}`;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+        // Function to handle the "Buy" button click
+        function handleBuyButtonClick(itemId, quantityToReduce) {
+            const itemElement = document.getElementById(itemId);
+            const itemDetails = itemElement.textContent.split(' - ');
+            const itemQuantity = parseInt(itemDetails[3], 10);
+
+            if (itemQuantity >= quantityToReduce) {
+                updateItemQuantity(itemId, quantityToReduce);
+            } else {
+                alert('Insufficient quantity!');
+            }
+        }
+
+        // Add event listeners to buttons for the backend data
+        function bindButtonEvents() {
+            const buy1Buttons = document.querySelectorAll('.delete');
+            const buy2Buttons = document.querySelectorAll('.edit');
+            const buy3Buttons = document.querySelectorAll('.edit');
+
+            buy1Buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const itemId = button.parentElement.id;
+                    handleBuyButtonClick(itemId, 1);
+                });
+            });
+
+            buy2Buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const itemId = button.parentElement.id;
+                    handleBuyButtonClick(itemId, 2);
+                });
+            });
+
+            buy3Buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const itemId = button.parentElement.id;
+                    handleBuyButtonClick(itemId, 3);
+                });
+            });
+        }
+
+        // Get request to fetch and display items on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            axios
+                .get('https://crudcrud.com/api/cfb4a97a0fdd4f098ebb1fe6b6418b4d/saveData')
+                .then(response => {
+                    response.data.forEach(item => {
+                        showItems(item);
+                    });
+                    // Bind event listeners to buttons for backend data
+                    bindButtonEvents();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
+        // Function to show backend data on UI
+        function showItems(item) {
+            const name = item.name;
+            const description = item.description;
+            const price = item.price;
+            const quantity = item.quantity;
+            const id = item._id;
+
+            const newitem = document.createElement('li');
+            newitem.className = 'list-group-items';
+            newitem.id = id; // Add the item ID as the element's ID for easy reference
+            newitem.appendChild(document.createTextNode(`${name} - ${description} - ${price} - ${quantity}`));
+            items.appendChild(newitem);
+
+            // buy1 button for backend data
+            const buy1 = document.createElement('button');
+            buy1.className = 'btn btn-sm float-middle delete';
+            buy1.appendChild(document.createTextNode('Buy 1'));
+            newitem.appendChild(buy1);
+
+            // adding buy2 button for backend data
+            const buy2 = document.createElement('button');
+            buy2.className = 'btn btn-sm float-middle edit';
+            buy2.appendChild(document.createTextNode('Buy 2'));
+            newitem.appendChild(buy2);
+
+            // adding buy3 for backend
+            const buy3 = document.createElement('button');
+            buy3.className = 'btn btn-sm float-middle edit';
+            buy3.appendChild(document.createTextNode('Buy 3'));
+            newitem.appendChild(buy3);
+        }
+
+    </script>
+</body>
+</html>
