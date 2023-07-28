@@ -23,6 +23,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
+        // const cors = require("cor");
+        // app.use(
+        //     cors({
+        //         origin:"http://127.0.0.1:5500",
+        //     })
+        // )
         // getting form and itemlist 
         const items = document.getElementById("items");
         const form = document.getElementById("form");
@@ -39,7 +45,7 @@
 
             // Saving data to backend
             axios
-                .post('https://crudcrud.com/api/cfb4a97a0fdd4f098ebb1fe6b6418b4d/saveData', {
+                .post('https://crudcrud.com/api/d35f21a41a9e412796eb4c2d45ed8af9/saveData', {
                     name: name,
                     description: description,
                     price: price,
@@ -61,7 +67,7 @@
         // Function to update the item quantity on the backend and UI
         function updateItemQuantity(itemId, quantityToReduce) {
             axios
-                .patch(`https://crudcrud.com/api/cfb4a97a0fdd4f098ebb1fe6b6418b4d/saveData/${itemId}`, {
+                .put(`https://crudcrud.com/api/d35f21a41a9e412796eb4c2d45ed8af9/saveData/${itemId}`, {
                     quantity: quantityToReduce,
                 })
                 .then(response => {
@@ -120,7 +126,7 @@
         // Get request to fetch and display items on page load
         window.addEventListener('DOMContentLoaded', () => {
             axios
-                .get('https://crudcrud.com/api/cfb4a97a0fdd4f098ebb1fe6b6418b4d/saveData')
+                .get('https://crudcrud.com/api/d35f21a41a9e412796eb4c2d45ed8af9/saveData')
                 .then(response => {
                     response.data.forEach(item => {
                         showItems(item);
